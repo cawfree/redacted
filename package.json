@@ -1,0 +1,25 @@
+{
+  "name": "redacted",
+  "version": "0.1.3",
+  "description": "The bare-bones plugin architecture for React.",
+  "main": "index.js",
+  "keywords": [
+    "react",
+    "react-native",
+    "react-native-web",
+    "native",
+    "plugin",
+    "addon",
+    "extension"
+  ],
+  "repository": "https://github.com/cawfree/redacted",
+  "author": "Alex Thomas (@cawfree) <hello@cawfree.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "prop-types": "^15.7.2",
+    "react": "^16.11.0",
+    "semver": "^6.3.0"
+  }
+}
