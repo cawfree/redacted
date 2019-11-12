@@ -130,10 +130,13 @@ This concept lies at the core of what Redacted is; it's not a very complicated i
 ```javascript
 import React, { useEffect } from 'react';
 import Plugin, { withRedacted } from 'redacted';
-import Apollo11 from './components/Apollo';
+import Apollo11 from './components/Apollo11';
 
 const Spaceship = withRedacted(
-  ({ require, ...extraProps }) => {
+  ({ require, redacted, ...extraProps }) => {
+    // XXX: It is also possible to access some meta information
+    //      that is internally assigned to a <Plugin /> by Redacted.
+    const { id } = redacted;
     useEffect(
       () => {
         // When we mount, let's request launch!

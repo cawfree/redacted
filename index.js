@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { deepMerge, cloneDeep } from 'lodash';
 import { coerce, satisfies } from 'semver';
+import uuidv4 from 'uuid/v4';
 
 const defaultOptions = {
   name: undefined,
@@ -45,7 +46,7 @@ const getMissingDependencies = (global = {}, local = {}) => {
 
 const hasAllDependencies = (global = {}, local = {}) => getMissingDependencies(global, local).length === 0;
 
-const Redactee = ({ name, version, Component, require, global, local, api, ...extraProps }) => {
+const Redactee = ({ name, version, redacted, Component, require, global, local, api, ...extraProps }) => {
   useEffect(
     () => {
       if (typeof name !== 'string' || name.length <= 0) {
@@ -96,6 +97,7 @@ const Redactee = ({ name, version, Component, require, global, local, api, ...ex
               `Redacted: Plugin "${name}" attempted to require "${pkg}", but it is not marked as a dependency. "${pkg}" should be marked as a dependency of "${name}".`,
             );
           }}
+          redacted={redacted}
         />
       </Context.Provider>
     );
@@ -143,9 +145,15 @@ export const withRedacted = (Component, options = defaultOptions) => class Redac
     ...cloneDeep(defaultOptions),
     ...(options || defaultOptions),
   };
+  state = {
+    redacted: {
+      id: uuidv4(),
+    },
+  };
   render() {
     const { dependencies: global,...extraContext } = this.context;
     const { dependencies: local, ...extraProps } = this.props;
+    const { redacted } = this.state;
     const { name, version } = options;
     return (
       <Redactee
@@ -154,6 +162,7 @@ export const withRedacted = (Component, options = defaultOptions) => class Redac
         Component={Component}
         name={name}
         version={version}
+        redacted={redacted}
         {...extraProps}
         {...extraContext}
       />
